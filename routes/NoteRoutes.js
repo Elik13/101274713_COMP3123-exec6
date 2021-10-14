@@ -17,7 +17,7 @@ app.post('/notes', async (req, res) => {
         dateAdded: Date.now(),
         dateUpdated: Date.now()
     })
-    await Note.save(note);
+    await note.save();
     res.send(note);
 });
 
@@ -47,10 +47,7 @@ app.put('/notes/:noteId', async (req, res) => {
         });
     }
     try {
-        let note = await Note.findOne({_id: req.params.noteId});
-        note = req.body;
-        note.id = noteId;
-        await Note.save(note);
+        let note = await Note.findByIdAndUpdate(req.params.noteId, req.body);
         res.send(note);
     } catch {
         res.status(404)
